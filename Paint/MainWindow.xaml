@@ -51,5 +51,6 @@
                 <Label Name="pointLabel" Content="" Width="150"/>
             </StatusBarItem>
         </StatusBar>
+        <ListBox Width="100" d:ItemsSource="{d:SampleData ItemCount=5}"/>
     </DockPanel>
 </Window>
