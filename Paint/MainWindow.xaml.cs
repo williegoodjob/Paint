@@ -45,6 +45,7 @@ namespace Paint
 
         private void myCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            strokeColor = (Color)strokeColorPicker.SelectedColor;
             Brush brush = new SolidColorBrush(strokeColor);
             Line line = new Line
             {
@@ -69,5 +70,6 @@ namespace Paint
             shapeType = targetRadioButton.Tag.ToString();
             shapeLabel.Content = shapeType;
         }
+
     }
 }

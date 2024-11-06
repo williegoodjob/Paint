@@ -10,7 +10,7 @@
     <DockPanel LastChildFill="False">
         <Menu Height="30" DockPanel.Dock="Top">
             <MenuItem Header="檔案" FontSize="14" Height="28" VerticalAlignment="Center">
-                <MenuItem Header="開新檔案" FontSize="14" Height="28" VerticalAlignment="Center"/>
+                <MenuItem Header="新增檔案" FontSize="14" Height="28" VerticalAlignment="Center"/>
                 <MenuItem Header="開啟舊檔" FontSize="14" Height="28" VerticalAlignment="Center"/>
                 <MenuItem Header="儲存檔案" FontSize="14" Height="28" VerticalAlignment="Center"/>
                 <MenuItem Header="另存新檔" FontSize="14" Height="28" VerticalAlignment="Center"/>
@@ -51,6 +51,5 @@
                 <Label Name="pointLabel" Content="" Width="150"/>
             </StatusBarItem>
         </StatusBar>
-        <ListBox Width="100" d:ItemsSource="{d:SampleData ItemCount=5}"/>
     </DockPanel>
 </Window>
