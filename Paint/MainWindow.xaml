@@ -27,7 +27,7 @@
                 <Label Width="46" VerticalContentAlignment="Center" FontWeight="Bold" FontSize="14" Margin="10,0,0,0" HorizontalContentAlignment="Center" Content="{Binding Value, ElementName=strokeThicknessSlider}"/>
             </ToolBar>
             <ToolBar Width="300" Background="#FFB1D5FD">
-                <RadioButton Width="38" Height="38" Click="ShapeButton_Click" Tag="line" >
+                <RadioButton Width="38" Height="38" Click="ShapeButton_Click" Tag="line" IsChecked="True" >
                     <Image Height="32" Width="32" Source="/line.png"/>
                 </RadioButton>
                 <RadioButton Width="38" Height="38" Click="ShapeButton_Click" Tag="rectangle" >
