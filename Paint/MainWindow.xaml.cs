@@ -16,20 +16,34 @@ namespace Paint
         string shapeType = "";
         string actionType = "";
         bool isDrawing = false;
+        public MainWindow()
+        {
+            InitializeComponent();
+            strokeColorPicker.SelectedColor = strokeColor;
+            fillColorPicker.SelectedColor = fillColor;
+        }
+        private void DisplayStatus()
+        {
+            pointLabel.Content = $"({Convert.ToInt32(start.X)}, {Convert.ToInt32(start.Y)}) -  ({Convert.ToInt32(dest.X)}, {Convert.ToInt32(dest.Y)})";
+            int lineCount = myCanvas.Children.OfType<Line>().Count();
+            int rectangleCount = myCanvas.Children.OfType<Rectangle>().Count();
+            int ellipseCount = myCanvas.Children.OfType<Ellipse>().Count();
+            int polylineCount = myCanvas.Children.OfType<Polyline>().Count();
+            statusLabl.Content = $"Lines: {lineCount}, Rectangles: {rectangleCount}, Ellipses: {ellipseCount}, Polylines: {polylineCount}";
+        }
         private void myCanvas_MouseEnter(object sender, MouseEventArgs e)
         {
-            myCanvas.Cursor = Cursors.Pen;
         }
 
         private void myCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            myCanvas.Cursor = Cursors.Cross;
             start = e.GetPosition(myCanvas);
 
             Brush brush = new SolidColorBrush(strokeColor);
             Brush fill = new SolidColorBrush(fillColor);
             if (actionType == "draw")
             {
+                myCanvas.Cursor = Cursors.Cross;
                 switch (shapeType)
                 {
                     case "line":
@@ -84,21 +98,16 @@ namespace Paint
                 myCanvas.Children.Remove(elements as UIElement);
             }
 
-            DisplayStatus(start, dest);
+            DisplayStatus();
         }
-
-        private void DisplayStatus(Point start, Point dest)
+        private void myCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            pointLabel.Content = $"({Convert.ToInt32(start.X)}, {Convert.ToInt32(start.Y)}) -  ({Convert.ToInt32(dest.X)}, {Convert.ToInt32(dest.Y)})";
+            if (isDrawing == true)
+            {
+                myCanvas.Cursor = Cursors.Pen;
+                isDrawing = false;
+            }
         }
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            strokeColorPicker.SelectedColor = strokeColor;
-            fillColorPicker.SelectedColor = fillColor;
-        }
-
         private void myCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             dest = e.GetPosition(myCanvas);
@@ -138,37 +147,28 @@ namespace Paint
                         break;
                 }
             }
-            DisplayStatus(start, dest);
+            DisplayStatus();
         }
-
-        private void myCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            isDrawing = false;
-        }
-
         private void strokeThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             strokeThickness = Convert.ToInt32(strokeThicknessSlider.Value);
         }
-
         private void ShapeButton_Click(object sender, RoutedEventArgs e)
         {
             var targetRadioButton = sender as RadioButton;
             actionType = "draw";
+            myCanvas.Cursor = Cursors.Pen;
             shapeType = targetRadioButton.Tag.ToString();
             shapeLabel.Content = shapeType;
         }
-
         private void fillColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             fillColor = (Color)fillColorPicker.SelectedColor;
         }
-
         private void strokeColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             strokeColor = (Color)strokeColorPicker.SelectedColor;
         }
-
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             actionType = "erase";
@@ -177,7 +177,6 @@ namespace Paint
                 myCanvas.Cursor = Cursors.Hand;
             }
         }
-
         private void trashcanButton_Click(object sender, RoutedEventArgs e)
         {
             myCanvas.Children.Clear();

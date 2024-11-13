@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Paint"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="2024 WPF Painter Ver1" Height="650" Width="1000">
+        Title="Painter" Height="650" Width="1000">
     <DockPanel LastChildFill="False">
         <Menu Height="30" DockPanel.Dock="Top">
             <MenuItem Header="檔案" FontSize="14" Height="28" VerticalAlignment="Center">
@@ -57,8 +57,12 @@
                 <Label x:Name= "shapeLabel" Content="Ready" Width="100"/>
             </StatusBarItem>
             <StatusBarItem>
-                <Label Name="pointLabel" Content="" Width="150"/>
+                <Label x:Name="pointLabel" Content="" Width="150"/>
             </StatusBarItem>
+            <StatusBarItem>
+                <Label x:Name="statusLabl" Content="" />
+            </StatusBarItem>
+
         </StatusBar>
     </DockPanel>
 </Window>
