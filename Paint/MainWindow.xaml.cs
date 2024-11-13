@@ -25,9 +25,6 @@ namespace Paint
             myCanvas.Cursor = Cursors.Cross;
             start = e.GetPosition(myCanvas);
 
-            strokeColor = (Color)strokeColorPicker.SelectedColor;
-            fillColor = (Color)fillColorPicker.SelectedColor;
-
             Brush brush = new SolidColorBrush(strokeColor);
             Brush fill = new SolidColorBrush(fillColor);
 
@@ -129,18 +126,6 @@ namespace Paint
 
         private void myCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //strokeColor = (Color)strokeColorPicker.SelectedColor;
-            //Brush brush = new SolidColorBrush(strokeColor);
-            //Line line = new Line
-            //{
-            //    Stroke = brush,
-            //    StrokeThickness = strokeThickness,
-            //    X1 = start.X,
-            //    Y1 = start.Y,
-            //    X2 = dest.X,
-            //    Y2 = dest.Y
-            //};
-            //myCanvas.Children.Add(line);
             isDrawing = false;
         }
 
@@ -156,5 +141,14 @@ namespace Paint
             shapeLabel.Content = shapeType;
         }
 
+        private void fillColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            fillColor = (Color)fillColorPicker.SelectedColor;
+        }
+
+        private void strokeColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            strokeColor = (Color)strokeColorPicker.SelectedColor;
+        }
     }
 }
