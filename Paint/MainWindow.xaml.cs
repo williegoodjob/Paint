@@ -1,8 +1,12 @@
-﻿using System.Windows;
+﻿using Microsoft.Win32;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
+
 
 namespace Paint
 {
@@ -191,6 +195,49 @@ namespace Paint
         private void trashcanButton_Click(object sender, RoutedEventArgs e)
         {
             myCanvas.Children.Clear();
+        }
+        private void SaveCanvasMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "儲存畫布",
+                Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|All Files (*.*)|*.*",
+                DefaultExt = ".png"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                int w = Convert.ToInt32(myCanvas.RenderSize.Width);
+                int h = Convert.ToInt32(myCanvas.RenderSize.Height);
+
+                // 創建 RenderTargetBitmap
+                RenderTargetBitmap renderBitmap = new RenderTargetBitmap(w, h, 96d, 96d, PixelFormats.Pbgra32);
+
+                // 渲染 Canvas
+                renderBitmap.Render(myCanvas);
+
+                // 選擇適當的 BitmapEncoder
+                BitmapEncoder encoder;
+                string extension = System.IO.Path.GetExtension(saveFileDialog.FileName).ToLower();
+                switch (extension)
+                {
+                    case ".jpg":
+                        encoder = new JpegBitmapEncoder();
+                        break;
+                    default:
+                        encoder = new PngBitmapEncoder();
+                        break;
+                }
+
+                // 將 RenderTargetBitmap 添加到編碼器的幀中
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                // 儲存影像到檔案
+                using (FileStream outStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                {
+                    encoder.Save(outStream);
+                }
+            }
         }
     }
 }
