@@ -111,41 +111,52 @@ namespace Paint
         private void myCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             dest = e.GetPosition(myCanvas);
-            if (isDrawing == true)
+            switch (actionType)
             {
-                Point origin;
-                double sizeW, sizeH;
-                origin.X = Math.Min(start.X, dest.X);
-                origin.Y = Math.Min(start.Y, dest.Y);
-                sizeW = Math.Abs(start.X - dest.X);
-                sizeH = Math.Abs(start.Y - dest.Y);
+                case "draw":
+                    if (isDrawing == true)
+                    {
+                        Point origin;
+                        double sizeW, sizeH;
+                        origin.X = Math.Min(start.X, dest.X);
+                        origin.Y = Math.Min(start.Y, dest.Y);
+                        sizeW = Math.Abs(start.X - dest.X);
+                        sizeH = Math.Abs(start.Y - dest.Y);
 
-                switch (shapeType)
-                {
-                    case "line":
-                        var line = myCanvas.Children.OfType<Line>().LastOrDefault();
-                        line.X2 = dest.X;
-                        line.Y2 = dest.Y;
-                        break;
-                    case "rectangle":
-                        var rectangle = myCanvas.Children.OfType<Rectangle>().LastOrDefault();
-                        rectangle.Width = sizeW;
-                        rectangle.Height = sizeH;
-                        rectangle.SetValue(Canvas.LeftProperty, origin.X);
-                        rectangle.SetValue(Canvas.TopProperty, origin.Y);
-                        break;
-                    case "ellipse":
-                        var ellipse = myCanvas.Children.OfType<Ellipse>().LastOrDefault();
-                        ellipse.Width = sizeW;
-                        ellipse.Height = sizeH;
-                        ellipse.SetValue(Canvas.LeftProperty, origin.X);
-                        ellipse.SetValue(Canvas.TopProperty, origin.Y);
-                        break;
-                    case "polyline":
-                        var polyline = myCanvas.Children.OfType<Polyline>().LastOrDefault();
-                        polyline.Points.Add(dest);
-                        break;
-                }
+                        switch (shapeType)
+                        {
+                            case "line":
+                                var line = myCanvas.Children.OfType<Line>().LastOrDefault();
+                                line.X2 = dest.X;
+                                line.Y2 = dest.Y;
+                                break;
+                            case "rectangle":
+                                var rectangle = myCanvas.Children.OfType<Rectangle>().LastOrDefault();
+                                rectangle.Width = sizeW;
+                                rectangle.Height = sizeH;
+                                rectangle.SetValue(Canvas.LeftProperty, origin.X);
+                                rectangle.SetValue(Canvas.TopProperty, origin.Y);
+                                break;
+                            case "ellipse":
+                                var ellipse = myCanvas.Children.OfType<Ellipse>().LastOrDefault();
+                                ellipse.Width = sizeW;
+                                ellipse.Height = sizeH;
+                                ellipse.SetValue(Canvas.LeftProperty, origin.X);
+                                ellipse.SetValue(Canvas.TopProperty, origin.Y);
+                                break;
+                            case "polyline":
+                                var polyline = myCanvas.Children.OfType<Polyline>().LastOrDefault();
+                                polyline.Points.Add(dest);
+                                break;
+                        }
+                    }
+                    break;
+                case "erase":
+                    var shape = e.OriginalSource as Shape;
+                    myCanvas.Children.Remove(shape);
+                    if (myCanvas.Children.Count == 0)
+                        myCanvas.Cursor = Cursors.Arrow;
+                    break;
             }
             DisplayStatus();
         }
